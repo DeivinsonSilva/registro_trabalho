@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Trabalhador {
+  id       Int       @id @default(autoincrement())
+  nome     String    @unique
+  registros Registro[]
+}
+
+model Fazenda {
+  id       Int       @id @default(autoincrement())
+  nome     String    @unique
+  registros Registro[]
+}
+
+model Servico {
+  id       Int       @id @default(autoincrement())
+  nome     String    @unique
+  registros Registro[]
+}
+
+
+model Registro {
+  id            Int         @id @default(autoincrement())
+  producao      Float
+  preco         Float
+  total         Float
+  data          DateTime    @default(now())
+
+  trabalhadorId Int
+  fazendaId     Int
+  servicoId     Int
+
+  trabalhador   Trabalhador @relation(fields: [trabalhadorId], references: [id])
+  fazenda       Fazenda     @relation(fields: [fazendaId], references: [id])
+  servico       Servico     @relation(fields: [servicoId], references: [id])
+}
